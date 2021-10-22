@@ -1,5 +1,5 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ConfigService } from '@nestjs/config'
 
@@ -8,10 +8,7 @@ import { UserRepository } from '@/repository'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private readonly userRepo: UserRepository,
-    protected configService: ConfigService,
-  ) {
+  constructor(private readonly userRepo: UserRepository, protected configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -22,17 +19,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: UserPayloadType) {
     const { id: userId } = payload
 
-    const user = this.userRepo.findOne(userId)
+    const user = this.userRepo.findOne(userId, { relations: ['role'] })
 
-    if (!user) {
-      throw new HttpException(
-        {
-          statusCode: 401,
-          message: 'Unauthorized',
-        },
-        HttpStatus.UNAUTHORIZED,
-      )
-    }
+    if (!user) throw new UnauthorizedException()
 
     return user
   }
