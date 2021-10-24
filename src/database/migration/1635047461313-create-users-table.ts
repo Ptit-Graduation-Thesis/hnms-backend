@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm'
 
-export class createUsersTable1634807535822 implements MigrationInterface {
+export class createUsersTable1635047461313 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -74,6 +74,11 @@ export class createUsersTable1634807535822 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'branch_id',
+            type: 'int',
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
@@ -110,6 +115,16 @@ export class createUsersTable1634807535822 implements MigrationInterface {
         columnNames: ['role_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'roles',
+        onDelete: 'CASCADE',
+      }),
+    )
+
+    await queryRunner.createForeignKey(
+      'users',
+      new TableForeignKey({
+        columnNames: ['branch_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'branchs',
         onDelete: 'CASCADE',
       }),
     )

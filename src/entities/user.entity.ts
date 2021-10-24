@@ -1,6 +1,19 @@
-import { BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { Role } from './role.entity'
+import { Branch } from './branch.entity'
+import { Room } from './room.entity'
+import { Message } from './message.entity'
+import { Bill } from './bill.entity'
 
 @Entity('users')
 export class User {
@@ -81,9 +94,28 @@ export class User {
   @Column({ name: 'role_id', type: 'int', nullable: false })
   roleId: number
 
+  @Column({ name: 'branch_id', type: 'int', nullable: false })
+  branchId: number
+
   @ManyToOne(() => Role, (role) => role.users, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'role_id' })
   role: Role
+
+  @ManyToOne(() => Branch, (barnch) => barnch.users, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'branch_id' })
+  branch: Branch
+
+  @OneToMany(() => Room, (room) => room.userOne, { cascade: true })
+  roomsHaveUserOne: Room[]
+
+  @OneToMany(() => Room, (room) => room.userTwo, { cascade: true })
+  roomsHaveUserTwo: Room[]
+
+  @OneToMany(() => Message, (message) => message.user, { cascade: true })
+  messages: Message[]
+
+  @OneToMany(() => Bill, (bill) => bill.user, { cascade: true })
+  bills: Bill[]
 
   @Column({
     name: 'created_at',

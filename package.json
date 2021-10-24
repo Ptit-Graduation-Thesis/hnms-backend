@@ -15,7 +15,11 @@
     "lint": "eslint './src/**/*.ts'",
     "lint:fix": "eslint './src/**/*.ts' --fix",
     "format": "prettier --write 'src/**/*.ts'",
-    "migration:run": "ts-node ./node_modules/.bin/typeorm migration:run"
+    "migration:run": "ts-node ./node_modules/.bin/typeorm migration:run",
+    "migration:create": "ts-node ./node_modules/.bin/typeorm migration:create -n",
+    "migration:revert": "ts-node ./node_modules/.bin/typeorm migration:revert",
+    "schema:drop": "ts-node ./node_modules/.bin/typeorm schema:drop",
+    "seed:run": "ts-node ./src/database/seed"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",

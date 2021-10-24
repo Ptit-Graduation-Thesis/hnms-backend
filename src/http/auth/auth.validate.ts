@@ -8,8 +8,8 @@ export class AuthValidate {
   async login(login: LoginDto) {
     try {
       const schema = Joi.object({
-        username: Joi.string().max(127),
-        password: Joi.string().min(6).max(127),
+        username: Joi.string().required().max(127).required(),
+        password: Joi.string().required().min(6).max(127).required(),
       })
 
       return await schema.validateAsync(login)
