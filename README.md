@@ -24,6 +24,9 @@ $ docker-compose up -d --build
 
 # run migration
 $ docker exec -it node_server npm run migration:run
+
+# run seed
+$ docker exec -it node_server npm run seed:run
 ```
 
 ## Start development
@@ -37,6 +40,9 @@ $ docker-compose up -d --build mysql redis minio phpmyadmin
 
 # run migration
 $ npm run migration:run
+
+# run seed
+$ npm run seed:run
 
 # run server dev
 $ npm run start:dev

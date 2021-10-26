@@ -4,11 +4,11 @@ import { json } from 'body-parser'
 import { SwaggerModule } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import { config } from 'aws-sdk'
+import { IoAdapter } from '@nestjs/platform-socket.io'
 
 import { AppModule } from '@/app.module'
 import { swaggerConfig } from '@/app.swagger'
 import { JwtGuard } from '@/jwt'
-import { SocketIoAdapter } from '@/adapter'
 import { RolesGuard } from '@/guards'
 
 // eslint-disable-next-line prettier/prettier
@@ -20,7 +20,7 @@ import { RolesGuard } from '@/guards'
   app.use(morgan('dev'))
   app.use(json({ limit: '50mb' }))
   app.useGlobalGuards(new JwtGuard(reflector), new RolesGuard(reflector))
-  app.useWebSocketAdapter(new SocketIoAdapter(app, true))
+  app.useWebSocketAdapter(new IoAdapter(app))
 
   const document = SwaggerModule.createDocument(app, swaggerConfig)
   SwaggerModule.setup('document', app, document)

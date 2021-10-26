@@ -15,19 +15,12 @@ export class createRoomsTable1635047514350 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'name',
-            type: 'varchar',
-            length: '127',
-            collation: 'utf8_general_ci',
-            isNullable: false,
-          },
-          {
-            name: 'user_one',
+            name: 'user_one_id',
             type: 'int',
             isNullable: false,
           },
           {
-            name: 'user_two',
+            name: 'user_two_id',
             type: 'int',
             isNullable: false,
           },
@@ -49,7 +42,7 @@ export class createRoomsTable1635047514350 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'rooms',
       new TableForeignKey({
-        columnNames: ['user_one'],
+        columnNames: ['user_one_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
         onDelete: 'CASCADE',
@@ -59,7 +52,7 @@ export class createRoomsTable1635047514350 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'rooms',
       new TableForeignKey({
-        columnNames: ['user_two'],
+        columnNames: ['user_two_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
         onDelete: 'CASCADE',

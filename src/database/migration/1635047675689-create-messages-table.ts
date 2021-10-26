@@ -18,7 +18,8 @@ export class createMessagesTable1635047675689 implements MigrationInterface {
             name: 'text',
             type: 'varchar',
             length: '255',
-            collation: 'utf8_general_ci',
+            charset: 'utf8mb4',
+            collation: 'utf8mb4_unicode_ci',
             isNullable: false,
           },
           {

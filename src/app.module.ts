@@ -9,9 +9,20 @@ import { AppGateway } from '@/gateways'
 import { JwtModule } from '@/jwt'
 import { AuthModule } from '@/http/auth'
 import { UserModule } from '@/http/user'
+import { RoomModule } from '@/http/room'
+import { RepositoryModule } from '@/repository'
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, JwtModule, BullModule, AuthModule, UserModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    DatabaseModule,
+    RepositoryModule,
+    JwtModule,
+    BullModule,
+    AuthModule,
+    UserModule,
+    RoomModule,
+  ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
 })

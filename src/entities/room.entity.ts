@@ -17,27 +17,18 @@ export class Room {
   @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number
 
-  @Column({
-    name: 'name',
-    type: 'varchar',
-    length: 127,
-    collation: 'utf8_general_ci',
-    nullable: false,
-  })
-  name: string
-
-  @Column({ name: 'user_one', type: 'int', nullable: false })
+  @Column({ name: 'user_one_id', type: 'int', nullable: false })
   userOneId: number
 
-  @Column({ name: 'user_two', type: 'int', nullable: false })
+  @Column({ name: 'user_two_id', type: 'int', nullable: false })
   userTwoId: number
 
   @ManyToOne(() => User, (user) => user.roomsHaveUserOne, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_one' })
+  @JoinColumn({ name: 'user_one_id' })
   userOne: User
 
   @ManyToOne(() => User, (user) => user.roomsHaveUserTwo, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_two' })
+  @JoinColumn({ name: 'user_two_id' })
   userTwo: User
 
   @OneToMany(() => Message, (message) => message.room, { cascade: true })

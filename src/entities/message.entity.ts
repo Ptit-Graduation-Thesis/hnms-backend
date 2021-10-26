@@ -12,10 +12,11 @@ export class Message {
     name: 'text',
     type: 'varchar',
     length: 255,
-    collation: 'utf8_general_ci',
+    charset: 'utf8mb4',
+    collation: 'utf8mb4_unicode_ci',
     nullable: false,
   })
-  name: string
+  text: string
 
   @Column({ name: 'room_id', type: 'int', nullable: false })
   roomId: number

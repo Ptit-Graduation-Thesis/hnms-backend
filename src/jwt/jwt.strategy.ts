@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ConfigService } from '@nestjs/config'
 
-import { UserPayloadType } from '@/types'
+import { UserPayloadType } from '@/types/auth.type'
 import { UserRepository } from '@/repository'
 
 @Injectable()
