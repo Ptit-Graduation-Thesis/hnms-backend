@@ -1,8 +1,6 @@
 import { createConnection } from 'typeorm'
-import * as bcrypt from 'bcrypt'
-import * as dotenv from 'dotenv'
-
-import { Branch, Role, User } from '../../entities'
+import bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -15,19 +13,19 @@ dotenv.config()
   await queryRunner.startTransaction()
 
   try {
-    await queryRunner.manager.insert(Role, [
+    await queryRunner.manager.insert('roles', [
       { id: 1, name: 'ADMIN' },
       { id: 2, name: 'ACCOUNTING' },
       { id: 3, name: 'SALE_EMPLOYEE' },
     ])
 
-    await queryRunner.manager.insert(Branch, [
+    await queryRunner.manager.insert('branchs', [
       { id: 1, name: 'Branch 1', address: 'Thai Ha, Ha Noi' },
       { id: 2, name: 'Branch 2', address: 'Ha Dong, Ha Noi' },
       { id: 3, name: 'Branch 3', address: 'Thanh pho Hai Duong' },
     ])
 
-    await queryRunner.manager.insert(User, [
+    await queryRunner.manager.insert('users', [
       {
         fullName: 'Admin',
         username: 'admin',
@@ -37,6 +35,7 @@ dotenv.config()
         credentialId: '0123456789',
         dob: '1999-01-30',
         salary: 50000000,
+        status: 1,
         roleId: 1,
         branchId: 1,
       },
@@ -49,6 +48,7 @@ dotenv.config()
         credentialId: '0123456789',
         dob: '1999-01-30',
         salary: 20000000,
+        status: 1,
         roleId: 2,
         branchId: 1,
       },
@@ -61,6 +61,7 @@ dotenv.config()
         credentialId: '0123456789',
         dob: '1999-01-30',
         salary: 10000000,
+        status: 1,
         roleId: 3,
         branchId: 1,
       },

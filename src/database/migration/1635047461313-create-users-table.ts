@@ -69,6 +69,12 @@ export class createUsersTable1635047461313 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'status',
+            type: 'tinyint',
+            unsigned: true,
+            isNullable: false,
+          },
+          {
             name: 'role_id',
             type: 'int',
             isNullable: false,

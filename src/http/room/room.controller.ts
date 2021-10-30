@@ -28,9 +28,9 @@ export class RoomController {
     return this.roomService.enterRoom(userId, enterRoomDto.userTwoId)
   }
 
-  @Get('/:id/messages')
+  @Get('/:roomId/messages')
   @HttpCode(200)
-  async getMessages(@Param('id') roomId: number, @Query('limit') limit = 10, @Query('page') page = 1) {
+  async getMessages(@Param('roomId') roomId: number, @Query('limit') limit = 10, @Query('page') page = 1) {
     await this.roomValidate.getMessages({ roomId, limit, page })
 
     return this.roomService.getMessages(roomId, limit, page)

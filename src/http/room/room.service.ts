@@ -3,11 +3,6 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { MessageRepository, RoomRepository } from '@/repository'
 import { Room } from '@/entities'
 
-const getOtherUserName = (userId: number, room: Room) => {
-  if (room.userOneId !== userId) return room.userOne.fullName
-  return room.userTwo.fullName
-}
-
 @Injectable()
 export class RoomService {
   constructor(private readonly roomRepo: RoomRepository, private readonly messageRepo: MessageRepository) {}
@@ -36,13 +31,12 @@ export class RoomService {
 
   async getMessages(roomId: number, limit: number, page: number) {
     const offset = (page - 1) * limit
-    const [data, total] = await this.messageRepo.findAndCount({
-      relations: ['user'],
-      where: { roomId },
-      take: limit,
-      skip: offset,
-      order: { id: 'DESC' },
-    })
+    const [data, total] = await this.messageRepo.getMessages(roomId, limit, offset)
     return { data, total, limit, page }
   }
+}
+
+function getOtherUserName(userId: number, room: Room) {
+  if (room.userOneId !== userId) return room.userOne.fullName
+  return room.userTwo.fullName
 }

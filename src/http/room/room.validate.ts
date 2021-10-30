@@ -1,16 +1,16 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
-import * as Joi from 'joi'
+import Joi from 'joi'
 
 @Injectable()
 export class RoomValidate {
   async getRooms(params: { limit: number; page: number }) {
     try {
       const schema = Joi.object({
-        limit: Joi.number().min(0),
-        page: Joi.number().min(0).required(),
+        limit: Joi.number().integer().min(0).required(),
+        page: Joi.number().integer().min(0).required(),
       })
       await schema.validateAsync(params)
-    } catch (error) {
+    } catch {
       throw new BadRequestException()
     }
   }
@@ -18,10 +18,10 @@ export class RoomValidate {
   async enterRoom(params: { userTwoId: number }) {
     try {
       const schema = Joi.object({
-        userTwoId: Joi.number().min(0).required(),
+        userTwoId: Joi.number().integer().min(0).required(),
       })
       await schema.validateAsync(params)
-    } catch (error) {
+    } catch {
       throw new BadRequestException()
     }
   }
@@ -29,12 +29,12 @@ export class RoomValidate {
   async getMessages(params: { roomId: number; limit: number; page: number }) {
     try {
       const schema = Joi.object({
-        roomId: Joi.number().min(0).required(),
-        limit: Joi.number().min(0),
-        page: Joi.number().min(0).required(),
+        roomId: Joi.number().integer().min(0).required(),
+        limit: Joi.number().integer().min(0).required(),
+        page: Joi.number().integer().min(0).required(),
       })
       await schema.validateAsync(params)
-    } catch (error) {
+    } catch {
       throw new BadRequestException()
     }
   }

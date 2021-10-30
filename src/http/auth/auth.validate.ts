@@ -1,19 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import * as Joi from 'joi'
+import Joi from 'joi'
 
-import { LoginDto } from '@/http/auth/dto'
+import { LoginDto } from './dto'
 
 @Injectable()
 export class AuthValidate {
-  async login(login: LoginDto) {
+  async login(loginParam: LoginDto) {
     try {
       const schema = Joi.object({
-        username: Joi.string().required().max(127).required(),
-        password: Joi.string().required().min(6).max(127).required(),
+        username: Joi.string().max(127).required(),
+        password: Joi.string().min(6).max(127).required(),
       })
 
-      return await schema.validateAsync(login)
-    } catch (error) {
+      return await schema.validateAsync(loginParam)
+    } catch {
       throw new BadRequestException()
     }
   }

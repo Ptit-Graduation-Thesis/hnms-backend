@@ -76,7 +76,10 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         userId: payload.user._id,
         roomId: payload.roomId,
       })
-    } catch {}
+    } catch {
+      this.logger.error('Save message error!')
+      return
+    }
 
     client.to(`room-${payload.roomId}`).emit(SocketEvent.CLIENT_RECIEPT, payload)
   }

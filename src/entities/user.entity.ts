@@ -91,6 +91,14 @@ export class User {
   })
   salary: number
 
+  @Column({
+    name: 'status',
+    type: 'tinyint',
+    unsigned: true,
+    nullable: false,
+  })
+  status: number
+
   @Column({ name: 'role_id', type: 'int', nullable: false })
   roleId: number
 

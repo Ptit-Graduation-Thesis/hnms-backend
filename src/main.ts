@@ -1,5 +1,5 @@
 import { NestFactory, Reflector } from '@nestjs/core'
-import * as morgan from 'morgan'
+import morgan from 'morgan'
 import { json } from 'body-parser'
 import { SwaggerModule } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
