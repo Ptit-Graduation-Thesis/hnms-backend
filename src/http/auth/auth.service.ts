@@ -15,11 +15,11 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async login({ username, password }) {
+  async login({ username: loginUsername, password }) {
     const existUser = await this.userRepo.findOne(
-      { username, status: UserStatus.ACTIVE },
+      { username: loginUsername, status: UserStatus.ACTIVE },
       {
-        select: ['id', 'fullName', 'phoneNumber', 'address', 'credentialId', 'dob', 'salary', 'password'],
+        select: ['id', 'fullName', 'phoneNumber', 'address', 'credentialId', 'dob', 'salary', 'username', 'password'],
         relations: ['role', 'branch'],
       },
     )
@@ -27,7 +27,7 @@ export class AuthService {
     if (!existUser || !(await bcrypt.compare(password || '', existUser.password)))
       throw new HttpException('Username or password was incorrect', HttpStatus.UNAUTHORIZED)
 
-    const { id, fullName, phoneNumber, address, credentialId, dob, salary } = existUser
+    const { id, fullName, phoneNumber, address, credentialId, dob, salary, username } = existUser
     const { id: roleId, name: roleName } = existUser.role
     const { id: branchId, name: branchName, address: branchAddress } = existUser.branch
 
@@ -40,6 +40,7 @@ export class AuthService {
         credentialId,
         dob: formatDate(dob),
         salary,
+        username,
         role: { id: roleId, roleName },
         branch: { id: branchId, name: branchName, address: branchAddress },
       },

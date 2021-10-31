@@ -22,6 +22,14 @@ export class UserController {
     return this.userService.getUsers(limit, page)
   }
 
+  @Get('/search')
+  @HttpCode(200)
+  async searchUser(@Query('keyword') keyword = '', @Query('limit') limit = 10, @Query('page') page = 1) {
+    await this.userValidate.searchUser({ keyword, limit, page })
+
+    return this.userService.searchUser(keyword, limit, page)
+  }
+
   @Get('/:userId')
   @Roles(RoleStatus.ADMIN)
   @HttpCode(200)
@@ -29,14 +37,6 @@ export class UserController {
     await this.userValidate.getUser({ userId })
 
     return this.userService.getUser(userId)
-  }
-
-  @Get('/search')
-  @HttpCode(200)
-  async searchUser(@Query('keyword') keyword = '', @Query('limit') limit = 10, @Query('page') page = 1) {
-    await this.userValidate.searchUser({ keyword, limit, page })
-
-    return this.userService.searchUser(keyword, limit, page)
   }
 
   @Post()

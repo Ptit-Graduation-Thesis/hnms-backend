@@ -22,7 +22,8 @@ export class ProfileService {
     }
 
     try {
-      await this.userRepo.update(userId, {
+      const user = await this.userRepo.save({
+        id: userId,
         fullName: profile.fullName || existUser.fullName,
         username: profile.username || existUser.username,
         password: profile.password
@@ -32,6 +33,10 @@ export class ProfileService {
         address: profile.address || existUser.address,
         dob: profile.dob || existUser.dob,
       })
+
+      const { fullName, phoneNumber, address, dob, username } = user
+
+      return { fullName, phoneNumber, address, dob, username }
     } catch {
       throw new InternalServerErrorException()
     }

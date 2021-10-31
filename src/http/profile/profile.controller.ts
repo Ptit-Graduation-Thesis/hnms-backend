@@ -20,10 +20,10 @@ export class ProfileController {
   }
 
   @Put()
-  @HttpCode(204)
+  @HttpCode(200)
   async updateProfile(@User('id') userId: number, @Body() profileDto: ProfileDto) {
     await this.profileValidate.updateProfile(profileDto)
 
-    await this.profileService.updateProfile(userId, profileDto)
+    return await this.profileService.updateProfile(userId, profileDto)
   }
 }

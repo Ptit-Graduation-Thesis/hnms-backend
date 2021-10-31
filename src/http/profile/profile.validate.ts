@@ -17,7 +17,9 @@ export class ProfileValidate {
         dob: Joi.date(),
       })
       await schema.validateAsync(params)
-    } catch {
+    } catch (err) {
+      console.log(err)
+
       throw new BadRequestException()
     }
   }
