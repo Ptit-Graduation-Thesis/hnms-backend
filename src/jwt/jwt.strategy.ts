@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config'
 
 import { UserPayloadType } from '@/types/auth.type'
 import { UserRepository } from '@/repository'
+import { UserStatus } from '@/enums'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: UserPayloadType) {
     const { id: userId } = payload
 
-    const user = this.userRepo.findOne(userId, { relations: ['role', 'branch'] })
+    const user = this.userRepo.findOne(userId, { relations: ['role', 'branch'], where: { status: UserStatus.ACTIVE } })
 
     if (!user) throw new UnauthorizedException()
 

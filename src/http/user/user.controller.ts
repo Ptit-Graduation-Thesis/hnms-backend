@@ -16,10 +16,17 @@ export class UserController {
   @Get()
   @Roles(RoleStatus.ADMIN)
   @HttpCode(200)
-  async getUsers(@Query('limit') limit = 10, @Query('page') page = 1) {
-    await this.userValidate.getUsers({ limit, page })
+  async getUsers(
+    @Query('roles') roles: number[] = [],
+    @Query('branchs') branchs: number[] = [],
+    @Query('status') status?: number,
+    @Query('keyword') keyword = '',
+    @Query('limit') limit = 10,
+    @Query('page') page = 1,
+  ) {
+    await this.userValidate.getUsers({ roles, branchs, status, keyword, limit, page })
 
-    return this.userService.getUsers(limit, page)
+    return this.userService.getUsers(roles, branchs, status, keyword, limit, page)
   }
 
   @Get('/search')

@@ -8,10 +8,12 @@ import { RepositoryModule } from '@/repository'
 import { JwtModule } from '@/jwt'
 import { BullModule } from '@/bull'
 import { AppGateway } from '@/gateways'
+import { SuggestModule } from '@/http/suggest'
 import { AuthModule } from '@/http/auth'
 import { ProfileModule } from '@/http/profile'
 import { UserModule } from '@/http/user'
 import { RoomModule } from '@/http/room'
+import { BranchModule } from '@/http/barnch'
 
 @Module({
   imports: [
@@ -20,10 +22,12 @@ import { RoomModule } from '@/http/room'
     RepositoryModule,
     JwtModule,
     BullModule,
+    SuggestModule,
     AuthModule,
     ProfileModule,
     UserModule,
     RoomModule,
+    BranchModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],

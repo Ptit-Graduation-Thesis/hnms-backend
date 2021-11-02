@@ -1,4 +1,4 @@
-import { EntityRepository, Repository, Like } from 'typeorm'
+import { EntityRepository, Repository, Like, In } from 'typeorm'
 
 import { User } from '@/entities/user.entity'
 
@@ -9,8 +9,21 @@ export class UserRepository extends Repository<User> {
     return !!existUser
   }
 
-  getUsers(limit: number, offset: number) {
+  getUsers(roles: number[], branchs: number[], status: number, keyword: string, limit: number, offset: number) {
+    let conditions = [
+      { fullName: Like(`%${keyword}%`) },
+      { username: Like(`%${keyword}%`) },
+      { phoneNumber: Like(`%${keyword}%`) },
+      { credentialId: Like(`%${keyword}%`) },
+    ]
+
+    if (roles.length > 0) conditions = conditions.map((condition) => ({ ...condition, roleId: In(roles) }))
+    if (branchs.length > 0) conditions = conditions.map((condition) => ({ ...condition, branchId: In(branchs) }))
+    if (status !== undefined) conditions = conditions.map((condition) => ({ ...condition, status }))
+
     return this.findAndCount({
+      relations: ['role', 'branch'],
+      where: conditions,
       take: limit,
       skip: offset,
       order: { id: 'DESC' },

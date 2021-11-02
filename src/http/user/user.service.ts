@@ -10,9 +10,9 @@ import { UserDto } from './dto'
 export class UserService {
   constructor(private readonly userRepo: UserRepository, private readonly configService: ConfigService) {}
 
-  async getUsers(limit: number, page: number) {
+  async getUsers(roles: number[], branchs: number[], status: number, keyword: string, limit: number, page: number) {
     const offset = (page - 1) * limit
-    const [data, total] = await this.userRepo.getUsers(limit, offset)
+    const [data, total] = await this.userRepo.getUsers(roles, branchs, status, keyword, limit, offset)
     return { data, total, limit, offset }
   }
 
@@ -68,7 +68,7 @@ export class UserService {
         credentialId: userDto.credentialId || existUser.credentialId,
         dob: userDto.dob || existUser.dob,
         salary: userDto.salary || existUser.salary,
-        status: userDto.status || existUser.status,
+        status: userDto.status ?? existUser.status,
         roleId: userDto.roleId || existUser.roleId,
         branchId: userDto.branchId || existUser.branchId,
       })

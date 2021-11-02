@@ -11,6 +11,9 @@ export class UserDto {
   password: string
 
   @ApiProperty()
+  confirmPassword: string
+
+  @ApiProperty()
   phoneNumber: string
 
   @ApiProperty()

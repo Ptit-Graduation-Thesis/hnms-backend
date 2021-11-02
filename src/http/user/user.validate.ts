@@ -5,14 +5,27 @@ import { UserDto } from './dto'
 
 @Injectable()
 export class UserValidate {
-  async getUsers(params: { limit: number; page: number }) {
+  async getUsers(params: {
+    roles: number[]
+    branchs: number[]
+    status?: number
+    keyword: string
+    limit: number
+    page: number
+  }) {
     try {
       const schema = Joi.object({
+        roles: Joi.array().items(Joi.number().integer().min(0)).required(),
+        branchs: Joi.array().items(Joi.number().integer().min(0)).required(),
+        status: Joi.number().integer(),
+        keyword: Joi.string().allow('').required(),
         limit: Joi.number().integer().min(0).required(),
         page: Joi.number().integer().min(0).required(),
       })
       await schema.validateAsync(params)
-    } catch {
+    } catch (err) {
+      console.log(err)
+
       throw new BadRequestException()
     }
   }
@@ -47,6 +60,7 @@ export class UserValidate {
         fullName: Joi.string().required(),
         username: Joi.string().required(),
         password: Joi.string().min(6).required(),
+        confirmPassword: Joi.equal(Joi.ref('password')).required(),
         phoneNumber: Joi.string().required(),
         address: Joi.string().required(),
         credentialId: Joi.string().required(),
@@ -67,6 +81,10 @@ export class UserValidate {
         fullName: Joi.string(),
         username: Joi.string(),
         password: Joi.string().min(6),
+        confirmPassword: Joi.equal(Joi.ref('password')).when('password', {
+          is: Joi.exist(),
+          then: Joi.required(),
+        }),
         phoneNumber: Joi.string(),
         address: Joi.string(),
         credentialId: Joi.string(),
