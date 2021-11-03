@@ -59,7 +59,7 @@ export class UserController {
   @Roles(RoleStatus.ADMIN)
   @HttpCode(204)
   async updateUser(@Body() userDto: UserDto, @Param('userId') userId: number) {
-    await this.userValidate.updateUser(userDto)
+    await this.userValidate.updateUser(userId, userDto)
 
     await this.userService.updateUser(userId, userDto)
   }

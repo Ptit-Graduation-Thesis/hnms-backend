@@ -10,4 +10,14 @@ export class BranchRepository extends Repository<Branch> {
       where: { name: Like(`%${keyword}%`) },
     })
   }
+
+  getBranchs(keyword: string, limit: number, offset: number) {
+    return this.findAndCount({
+      select: ['id', 'name', 'address'],
+      where: [{ name: Like(`%${keyword}%`) }, { address: Like(`%${keyword}%`) }],
+      take: limit,
+      skip: offset,
+      order: { id: 'DESC' },
+    })
+  }
 }

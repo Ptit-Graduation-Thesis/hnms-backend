@@ -75,9 +75,10 @@ export class UserValidate {
     }
   }
 
-  async updateUser(params: UserDto) {
+  async updateUser(userId: number, params: UserDto) {
     try {
       const schema = Joi.object({
+        userId: Joi.number().integer().min(0).required(),
         fullName: Joi.string(),
         username: Joi.string(),
         password: Joi.string().min(6),
@@ -94,7 +95,7 @@ export class UserValidate {
         roleId: Joi.number().integer().min(0),
         branchId: Joi.number().integer().min(0),
       })
-      await schema.validateAsync(params)
+      await schema.validateAsync({ ...params, userId })
     } catch {
       throw new BadRequestException()
     }
