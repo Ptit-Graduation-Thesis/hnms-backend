@@ -31,9 +31,14 @@ export class UserService {
   }
 
   async createUser(user: UserDto) {
-    const hasUser = await this.userRepo.hasUser(user.username)
+    const hasUsername = await this.userRepo.hasUsername(user.username)
+    if (hasUsername) throw new HttpException('Username already exist', HttpStatus.BAD_REQUEST)
 
-    if (hasUser) throw new HttpException('User already exist', HttpStatus.BAD_REQUEST)
+    const hasPhoneNumber = await this.userRepo.hasPhoneNumber(user.phoneNumber)
+    if (hasPhoneNumber) throw new HttpException('Phone number already exist', HttpStatus.BAD_REQUEST)
+
+    const hasCredentialId = await this.userRepo.hasCredentialId(user.credentialId)
+    if (hasCredentialId) throw new HttpException('Credential ID already exist', HttpStatus.BAD_REQUEST)
 
     try {
       const hashPassword = await bcrypt.hash(user.password, +this.configService.get('SALT_ROUNDS'))
@@ -51,9 +56,20 @@ export class UserService {
       .getOne()
 
     if (!existUser) throw new HttpException('User does not exist', HttpStatus.NOT_FOUND)
+
     if (userDto.username !== existUser.username) {
-      const hasUser = await this.userRepo.hasUser(userDto.username)
-      if (hasUser) throw new HttpException('User already exist', HttpStatus.BAD_REQUEST)
+      const hasUsername = await this.userRepo.hasUsername(userDto.username)
+      if (hasUsername) throw new HttpException('Username already exist', HttpStatus.BAD_REQUEST)
+    }
+
+    if (userDto.phoneNumber !== existUser.phoneNumber) {
+      const hasPhoneNumber = await this.userRepo.hasPhoneNumber(userDto.phoneNumber)
+      if (hasPhoneNumber) throw new HttpException('Phone number already exist', HttpStatus.BAD_REQUEST)
+    }
+
+    if (userDto.credentialId !== existUser.credentialId) {
+      const hasCredentialId = await this.userRepo.hasCredentialId(userDto.credentialId)
+      if (hasCredentialId) throw new HttpException('Credential ID already exist', HttpStatus.BAD_REQUEST)
     }
 
     try {

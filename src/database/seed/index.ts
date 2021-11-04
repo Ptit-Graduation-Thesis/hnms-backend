@@ -8,6 +8,7 @@ dotenv.config()
 ;(async function runSeed() {
   const connection = await createConnection()
   const queryRunner = connection.createQueryRunner()
+  const saltRounds = +process.env.SALT_ROUNDS
 
   await queryRunner.connect()
   await queryRunner.startTransaction()
@@ -15,24 +16,24 @@ dotenv.config()
   try {
     await queryRunner.manager.insert('roles', [
       { id: 1, name: 'ADMIN' },
-      { id: 2, name: 'ACCOUNTING' },
+      { id: 2, name: 'ACCOUNTANT' },
       { id: 3, name: 'SALE_EMPLOYEE' },
     ])
 
     await queryRunner.manager.insert('branchs', [
-      { id: 1, name: 'Branch 1', address: 'Thai Ha, Ha Noi' },
-      { id: 2, name: 'Branch 2', address: 'Ha Dong, Ha Noi' },
-      { id: 3, name: 'Branch 3', address: 'Thanh pho Hai Duong' },
+      { id: 1, name: 'Chi nhánh Thái Hà', address: 'Thái Hà, Hà Nội' },
+      { id: 2, name: 'Chi nhánh Hà Đông', address: 'Hà Đông, Hà Nội' },
+      { id: 3, name: 'Chi nhánh Hải Dương', address: 'Thành phố Hải Dương' },
     ])
 
     await queryRunner.manager.insert('users', [
       {
         fullName: 'Admin',
         username: 'admin',
-        password: bcrypt.hashSync('123456', +process.env.SALT_ROUNDS),
-        phoneNumber: '0123456789',
-        address: 'Ha Noi',
-        credentialId: '0123456789',
+        password: bcrypt.hashSync('123456', saltRounds),
+        phoneNumber: '097823648273',
+        address: 'Xa La, Hà Đông, Hà Nội',
+        credentialId: '563453453453345',
         dob: '1999-01-30',
         salary: 50000000,
         status: 1,
@@ -40,12 +41,12 @@ dotenv.config()
         branchId: 1,
       },
       {
-        fullName: 'Accounting',
-        username: 'accounting',
-        password: bcrypt.hashSync('123456', +process.env.SALT_ROUNDS),
-        phoneNumber: '0123456789',
-        address: 'Ha Noi',
-        credentialId: '0123456789',
+        fullName: 'Accountant',
+        username: 'accountant',
+        password: bcrypt.hashSync('123456', saltRounds),
+        phoneNumber: '082342834234',
+        address: 'Quang Trung, Hà Đông, Hà Nội',
+        credentialId: '45645234534645623',
         dob: '1999-01-30',
         salary: 20000000,
         status: 1,
@@ -55,10 +56,10 @@ dotenv.config()
       {
         fullName: 'Sale employee',
         username: 'sale-employee',
-        password: bcrypt.hashSync('123456', +process.env.SALT_ROUNDS),
-        phoneNumber: '0123456789',
-        address: 'Ha Noi',
-        credentialId: '0123456789',
+        password: bcrypt.hashSync('123456', saltRounds),
+        phoneNumber: '093846537413',
+        address: 'Thái Hà, Đống Đa, Hà Nội',
+        credentialId: '756345345234242534',
         dob: '1999-01-30',
         salary: 10000000,
         status: 1,

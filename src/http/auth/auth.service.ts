@@ -41,7 +41,7 @@ export class AuthService {
         dob: formatDate(dob),
         salary,
         username,
-        role: { id: roleId, roleName },
+        role: { id: roleId, name: roleName },
         branch: { id: branchId, name: branchName, address: branchAddress },
       },
       accessToken: this.jwtService.sign({ id: existUser.id }),

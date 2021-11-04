@@ -17,8 +17,8 @@ export class ProfileService {
       .getOne()
 
     if (profile.username !== existUser.username) {
-      const hasUser = await this.userRepo.hasUser(profile.username)
-      if (hasUser) throw new HttpException('User already exist', HttpStatus.BAD_REQUEST)
+      const hasUsername = await this.userRepo.hasUsername(profile.username)
+      if (hasUsername) throw new HttpException('Username already exist', HttpStatus.BAD_REQUEST)
     }
 
     try {

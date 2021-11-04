@@ -4,8 +4,18 @@ import { User } from '@/entities/user.entity'
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async hasUser(username: string) {
+  async hasUsername(username: string) {
     const existUser = await this.findOne({ username })
+    return !!existUser
+  }
+
+  async hasPhoneNumber(phoneNumber: string) {
+    const existUser = await this.findOne({ phoneNumber })
+    return !!existUser
+  }
+
+  async hasCredentialId(credentialId: string) {
+    const existUser = await this.findOne({ credentialId })
     return !!existUser
   }
 

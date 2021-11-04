@@ -41,6 +41,7 @@ export class createUsersTable1635047461313 implements MigrationInterface {
             type: 'varchar',
             length: '20',
             collation: 'latin1_general_ci',
+            isUnique: true,
             isNullable: false,
           },
           {
@@ -55,6 +56,7 @@ export class createUsersTable1635047461313 implements MigrationInterface {
             type: 'varchar',
             length: '30',
             collation: 'latin1_general_ci',
+            isUnique: true,
             isNullable: false,
           },
           {
@@ -104,6 +106,14 @@ export class createUsersTable1635047461313 implements MigrationInterface {
       new TableIndex({
         name: 'INDEX_USERS_USERNAME',
         columnNames: ['username'],
+      }),
+    )
+
+    await queryRunner.createIndex(
+      'users',
+      new TableIndex({
+        name: 'INDEX_USERS_PHONE_NUMBER',
+        columnNames: ['phone_number'],
       }),
     )
 

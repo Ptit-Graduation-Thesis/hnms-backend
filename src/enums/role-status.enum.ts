@@ -1,6 +1,6 @@
 export enum RoleStatus {
   ADMIN = 1,
-  ACOUNTING = 2,
+  ACCOUNTANT = 2,
   SALE_EMPLOYEE = 3,
 }
 
@@ -9,8 +9,8 @@ export const getRoleName = (role: RoleStatus | string) => {
     case RoleStatus.ADMIN:
       return 'Admin'
 
-    case RoleStatus.ACOUNTING:
-      return 'Accounting'
+    case RoleStatus.ACCOUNTANT:
+      return 'Accountant'
 
     case RoleStatus.SALE_EMPLOYEE:
       return 'Sale employee'
