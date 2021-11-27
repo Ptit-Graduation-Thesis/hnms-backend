@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm'
+import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm'
 
 export class createCustomersTable1635047823622 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -31,6 +31,7 @@ export class createCustomersTable1635047823622 implements MigrationInterface {
             type: 'varchar',
             length: '20',
             collation: 'latin1_general_ci',
+            isUnique: true,
             isNullable: false,
           },
           {
@@ -53,6 +54,14 @@ export class createCustomersTable1635047823622 implements MigrationInterface {
         ],
       }),
       true,
+    )
+
+    await queryRunner.createIndex(
+      'customers',
+      new TableIndex({
+        name: 'INDEX_CUSTOMERS_PHONE_NUMBER',
+        columnNames: ['phone_number'],
+      }),
     )
   }
 

@@ -14,6 +14,7 @@ import { ProfileModule } from '@/http/profile'
 import { UserModule } from '@/http/user'
 import { RoomModule } from '@/http/room'
 import { BranchModule } from '@/http/barnch'
+import { ItemModule } from '@/http/item'
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { BranchModule } from '@/http/barnch'
     UserModule,
     RoomModule,
     BranchModule,
+    ItemModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],

@@ -16,6 +16,14 @@ export class BranchItem {
   })
   amount: string
 
+  @Column({
+    name: 'import_price',
+    type: 'float',
+    unsigned: true,
+    nullable: false,
+  })
+  price: number
+
   @Column({ name: 'branch_id', type: 'int', nullable: false })
   branchId: number
 

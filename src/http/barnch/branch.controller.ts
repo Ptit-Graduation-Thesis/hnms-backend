@@ -7,7 +7,7 @@ import { BranchService } from './branch.service'
 import { BranchValidate } from './branch.validate'
 import { BranchDto } from './dto'
 
-@ApiTags('branch')
+@ApiTags('Branch')
 @ApiBearerAuth()
 @Controller('branchs')
 export class BranchController {

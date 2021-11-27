@@ -15,7 +15,7 @@ export class Item {
     collation: 'utf8_general_ci',
     nullable: false,
   })
-  fullName: string
+  name: string
 
   @Column({
     name: 'des',
@@ -35,13 +35,22 @@ export class Item {
   price: number
 
   @Column({
-    name: 'picture',
+    name: 'picture_key',
     type: 'varchar',
     length: 255,
     collation: 'utf8_general_ci',
-    nullable: true,
+    nullable: false,
   })
-  picture: string
+  pictureKey: string
+
+  @Column({
+    name: 'picture_url',
+    type: 'varchar',
+    length: 255,
+    collation: 'utf8_general_ci',
+    nullable: false,
+  })
+  pictureUrl: string
 
   @Column({
     name: 'qr_code',

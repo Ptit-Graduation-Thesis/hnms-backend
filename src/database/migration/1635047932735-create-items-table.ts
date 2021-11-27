@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm'
+import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm'
 
 export class createItemsTable1635047932735 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -35,17 +35,25 @@ export class createItemsTable1635047932735 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'picture',
+            name: 'picture_key',
             type: 'varchar',
             length: '255',
             collation: 'latin1_general_ci',
-            isNullable: true,
+            isNullable: false,
+          },
+          {
+            name: 'picture_url',
+            type: 'varchar',
+            length: '255',
+            collation: 'latin1_general_ci',
+            isNullable: false,
           },
           {
             name: 'qr_code',
             type: 'varchar',
             length: '50',
             collation: 'latin1_general_ci',
+            isUnique: true,
             isNullable: false,
           },
           {
@@ -67,6 +75,14 @@ export class createItemsTable1635047932735 implements MigrationInterface {
         ],
       }),
       true,
+    )
+
+    await queryRunner.createIndex(
+      'items',
+      new TableIndex({
+        name: 'ITEMS_QR_CODE',
+        columnNames: ['qr_code'],
+      }),
     )
   }
 

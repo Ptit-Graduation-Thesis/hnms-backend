@@ -23,9 +23,7 @@ export class UserValidate {
         page: Joi.number().integer().min(0).required(),
       })
       await schema.validateAsync(params)
-    } catch (err) {
-      console.log(err)
-
+    } catch {
       throw new BadRequestException()
     }
   }
