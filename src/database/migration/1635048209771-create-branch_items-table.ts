@@ -21,6 +21,12 @@ export class createBranchItemsTable1635048209771 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'import_price',
+            type: 'float',
+            unsigned: true,
+            isNullable: false,
+          },
+          {
             name: 'branch_id',
             type: 'int',
             isNullable: false,

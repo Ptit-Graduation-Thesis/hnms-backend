@@ -1,0 +1,52 @@
+import { BadRequestException, Injectable } from '@nestjs/common'
+import Joi from 'joi'
+
+import { ItemDto } from './dto'
+
+@Injectable()
+export class ItemValidate {
+  async getItems(params: { keyword: string; type: number; limit: number; page: number }) {
+    try {
+      const schema = Joi.object({
+        keyword: Joi.string().allow('').required(),
+        type: Joi.number().integer().min(0),
+        limit: Joi.number().integer().min(0).required(),
+        page: Joi.number().integer().min(0).required(),
+      })
+      await schema.validateAsync(params)
+    } catch {
+      throw new BadRequestException()
+    }
+  }
+
+  async createItem(params: ItemDto) {
+    try {
+      const schema = Joi.object({
+        name: Joi.string().required(),
+        des: Joi.string().allow(''),
+        price: Joi.number().min(0).required(),
+        picture: Joi.object().required(),
+        type: Joi.number().integer().min(0).required(),
+      })
+      await schema.validateAsync(params)
+    } catch {
+      throw new BadRequestException()
+    }
+  }
+
+  async updateItem(itemId: number, params: ItemDto) {
+    try {
+      const schema = Joi.object({
+        itemId: Joi.number().integer().min(0).required(),
+        name: Joi.string(),
+        des: Joi.string().allow(''),
+        price: Joi.number().min(0),
+        picture: Joi.object(),
+        type: Joi.number().integer().min(0),
+      })
+      await schema.validateAsync({ ...params, itemId })
+    } catch {
+      throw new BadRequestException()
+    }
+  }
+}
