@@ -1,9 +1,19 @@
-import { BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { Branch } from './branch.entity'
+import { ImportedItem } from './imported-item.entity'
 import { Item } from './item.entity'
 
-@Entity('barnch_items')
+@Entity('branch_items')
 export class BranchItem {
   @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number
@@ -14,15 +24,7 @@ export class BranchItem {
     unsigned: true,
     nullable: false,
   })
-  amount: string
-
-  @Column({
-    name: 'import_price',
-    type: 'float',
-    unsigned: true,
-    nullable: false,
-  })
-  price: number
+  amount: number
 
   @Column({ name: 'branch_id', type: 'int', nullable: false })
   branchId: number
@@ -37,6 +39,9 @@ export class BranchItem {
   @ManyToOne(() => Item, (item) => item.branchItems, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'item_id' })
   item: Item
+
+  @OneToMany(() => ImportedItem, (importedItem) => importedItem.branchItem, { cascade: true })
+  importedItems: ImportedItem[]
 
   @Column({
     name: 'created_at',

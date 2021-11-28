@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm'
 
-export class createBillsTable1635048412288 implements MigrationInterface {
+export class createImportedItemsTable1638087846944 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'bills',
+        name: 'imported_items',
         columns: [
           {
             name: 'id',
@@ -15,12 +15,24 @@ export class createBillsTable1635048412288 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'customer_id',
+            name: 'amount',
+            type: 'int',
+            unsigned: true,
+            isNullable: false,
+          },
+          {
+            name: 'import_price',
+            type: 'float',
+            unsigned: true,
+            isNullable: false,
+          },
+          {
+            name: 'import_bill_id',
             type: 'int',
             isNullable: false,
           },
           {
-            name: 'user_id',
+            name: 'branch_item_id',
             type: 'int',
             isNullable: false,
           },
@@ -40,27 +52,27 @@ export class createBillsTable1635048412288 implements MigrationInterface {
     )
 
     await queryRunner.createForeignKey(
-      'bills',
+      'imported_items',
       new TableForeignKey({
-        columnNames: ['customer_id'],
+        columnNames: ['import_bill_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'customers',
+        referencedTableName: 'import_bills',
         onDelete: 'CASCADE',
       }),
     )
 
     await queryRunner.createForeignKey(
-      'bills',
+      'imported_items',
       new TableForeignKey({
-        columnNames: ['user_id'],
+        columnNames: ['branch_item_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: 'branch_items',
         onDelete: 'CASCADE',
       }),
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('bills')
+    await queryRunner.dropTable('imported_item')
   }
 }

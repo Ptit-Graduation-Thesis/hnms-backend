@@ -1,9 +1,12 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common'
+import { getConnection } from 'typeorm'
 
 import { ItemRepository } from '@/repository'
 import { S3Service } from '@/s3'
-import { ItemDto } from './dto'
+import { ImportItemDto, ItemDto } from './dto'
 import { generateQrCode } from '@/utils/qr-code'
+import { BranchItem, ImportBill, Item } from '@/entities'
+import { ImportedItem } from '@/entities/imported-item.entity'
 
 @Injectable()
 export class ItemService {
@@ -73,6 +76,59 @@ export class ItemService {
       if (pictureKey) await this.s3Service.deletePublicFile(pictureKey)
 
       throw new InternalServerErrorException()
+    }
+  }
+
+  async importItem(userId: number, branchId: number, importItemDto: ImportItemDto) {
+    const connection = getConnection()
+    const queryRunner = connection.createQueryRunner()
+
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
+
+    try {
+      const importBill = await queryRunner.manager.save(ImportBill, { userId })
+
+      await Promise.all(
+        importItemDto.items.map(async (item) => {
+          const existItem = await queryRunner.manager.findOne(Item, item.itemId)
+
+          if (!existItem) throw new HttpException('Item does not exist', HttpStatus.NOT_FOUND)
+
+          const existBranchItem = await queryRunner.manager.findOne(BranchItem, { itemId: item.itemId, branchId })
+
+          if (existBranchItem) {
+            await queryRunner.manager.increment(BranchItem, { itemId: item.itemId, branchId }, 'amount', item.amount)
+            await queryRunner.manager.insert(ImportedItem, {
+              amount: item.amount,
+              importPrice: item.importPrice,
+              branchItemId: existBranchItem.id,
+              importBillId: importBill.id,
+            })
+
+            return
+          }
+          const branchItem = await queryRunner.manager.save(BranchItem, {
+            amount: item.amount,
+            itemId: item.itemId,
+            branchId,
+          })
+          await queryRunner.manager.insert(ImportedItem, {
+            amount: item.amount,
+            importPrice: item.importPrice,
+            branchItemId: branchItem.id,
+            importBillId: importBill.id,
+          })
+        }),
+      )
+
+      await queryRunner.commitTransaction()
+    } catch {
+      await queryRunner.rollbackTransaction()
+
+      throw new InternalServerErrorException()
+    } finally {
+      await queryRunner.release()
     }
   }
 }

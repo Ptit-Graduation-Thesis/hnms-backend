@@ -1,7 +1,8 @@
-import { Roles } from '@/decorator'
-import { RoleStatus } from '@/enums'
 import { Controller, Get, HttpCode, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+
+import { Roles } from '@/decorator'
+import { RoleStatus } from '@/enums'
 import { SuggestService } from './suggest.service'
 import { SuggestValidate } from './suggest.validate'
 

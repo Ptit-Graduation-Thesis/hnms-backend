@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm'
 
-export class createSoldItemsTable1635048503293 implements MigrationInterface {
+export class createImportBillsTable1638083014200 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'sold_items',
+        name: 'import_bills',
         columns: [
           {
             name: 'id',
@@ -15,18 +15,7 @@ export class createSoldItemsTable1635048503293 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'amount',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
-          {
-            name: 'item_id',
-            type: 'int',
-            isNullable: false,
-          },
-          {
-            name: 'sale_bill_id',
+            name: 'user_id',
             type: 'int',
             isNullable: false,
           },
@@ -46,27 +35,17 @@ export class createSoldItemsTable1635048503293 implements MigrationInterface {
     )
 
     await queryRunner.createForeignKey(
-      'sold_items',
+      'import_bills',
       new TableForeignKey({
-        columnNames: ['item_id'],
+        columnNames: ['user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'items',
-        onDelete: 'CASCADE',
-      }),
-    )
-
-    await queryRunner.createForeignKey(
-      'sold_items',
-      new TableForeignKey({
-        columnNames: ['sale_bill_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'sale_bills',
+        referencedTableName: 'users',
         onDelete: 'CASCADE',
       }),
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('sold_items')
+    await queryRunner.dropTable('import_bills')
   }
 }

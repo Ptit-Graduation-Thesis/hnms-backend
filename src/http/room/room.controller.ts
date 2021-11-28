@@ -1,7 +1,7 @@
-import { User } from '@/decorator'
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
+import { User } from '@/decorator'
 import { RoomService } from './room.service'
 import { RoomValidate } from './room.validate'
 import { EnterRoomDto } from './dto'

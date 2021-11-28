@@ -41,8 +41,11 @@ export class UserService {
     if (hasCredentialId) throw new HttpException('Credential ID already exist', HttpStatus.BAD_REQUEST)
 
     try {
-      const hashPassword = await bcrypt.hash(user.password, +this.configService.get('SALT_ROUNDS'))
-      await this.userRepo.insert({ ...user, status: UserStatus.ACTIVE, password: hashPassword })
+      await this.userRepo.insert({
+        ...user,
+        status: UserStatus.ACTIVE,
+        password: bcrypt.hashSync(user.password, +this.configService.get('SALT_ROUNDS')),
+      })
     } catch {
       throw new InternalServerErrorException()
     }

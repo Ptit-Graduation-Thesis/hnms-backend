@@ -1,6 +1,6 @@
 import { BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
-import { Bill } from './bill.entity'
+import { SaleBill } from './sale-bill.entity'
 import { Item } from './item.entity'
 
 @Entity('sold_items')
@@ -8,15 +8,23 @@ export class SoldItem {
   @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number
 
-  @Column({ name: 'bill_id', type: 'int', nullable: false })
-  billId: number
+  @Column({
+    name: 'amount',
+    type: 'int',
+    unsigned: true,
+    nullable: false,
+  })
+  amount: number
+
+  @Column({ name: 'sale_bill_id', type: 'int', nullable: false })
+  saleBillId: number
 
   @Column({ name: 'item_id', type: 'int', nullable: false })
   itemId: number
 
-  @ManyToOne(() => Bill, (bill) => bill.soldItems, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'bill_id' })
-  bill: Bill
+  @ManyToOne(() => SaleBill, (saleBill) => saleBill.soldItems, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'sale_bill_id' })
+  saleBill: SaleBill
 
   @ManyToOne(() => Item, (item) => item.soldItems, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'item_id' })

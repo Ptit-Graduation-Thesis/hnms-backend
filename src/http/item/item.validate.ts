@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import Joi from 'joi'
 
-import { ItemDto } from './dto'
+import { ImportItemDto, ItemDto } from './dto'
 
 @Injectable()
 export class ItemValidate {
@@ -46,6 +46,27 @@ export class ItemValidate {
       })
       await schema.validateAsync({ ...params, itemId })
     } catch {
+      throw new BadRequestException()
+    }
+  }
+
+  async importItem(params: ImportItemDto) {
+    try {
+      const schema = Joi.object({
+        items: Joi.array()
+          .items(
+            Joi.object({
+              itemId: Joi.number().integer().min(0).required(),
+              amount: Joi.number().integer().min(0).required(),
+              importPrice: Joi.number().min(0).required(),
+            }),
+          )
+          .required(),
+      })
+      await schema.validateAsync(params)
+    } catch (err) {
+      console.log(err)
+
       throw new BadRequestException()
     }
   }

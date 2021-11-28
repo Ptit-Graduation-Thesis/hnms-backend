@@ -1,8 +1,8 @@
-import { Roles } from '@/decorator'
-import { RoleStatus } from '@/enums'
 import { Body, Controller, Get, HttpCode, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
+import { Roles } from '@/decorator'
+import { RoleStatus } from '@/enums'
 import { BranchService } from './branch.service'
 import { BranchValidate } from './branch.validate'
 import { BranchDto } from './dto'

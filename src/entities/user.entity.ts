@@ -13,7 +13,8 @@ import { Role } from './role.entity'
 import { Branch } from './branch.entity'
 import { Room } from './room.entity'
 import { Message } from './message.entity'
-import { Bill } from './bill.entity'
+import { SaleBill } from './sale-bill.entity'
+import { ImportBill } from './import-bill.entity'
 
 @Entity('users')
 export class User {
@@ -122,8 +123,11 @@ export class User {
   @OneToMany(() => Message, (message) => message.user, { cascade: true })
   messages: Message[]
 
-  @OneToMany(() => Bill, (bill) => bill.user, { cascade: true })
-  bills: Bill[]
+  @OneToMany(() => SaleBill, (saleBill) => saleBill.user, { cascade: true })
+  saleBills: SaleBill[]
+
+  @OneToMany(() => ImportBill, (importBill) => importBill.user, { cascade: true })
+  importBills: ImportBill[]
 
   @Column({
     name: 'created_at',

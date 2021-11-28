@@ -13,8 +13,8 @@ import { Customer } from './customer.entity'
 import { SoldItem } from './sold-item.entity'
 import { User } from './user.entity'
 
-@Entity('bills')
-export class Bill {
+@Entity('sale_bills')
+export class SaleBill {
   @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number
 
@@ -24,15 +24,15 @@ export class Bill {
   @Column({ name: 'user_id', type: 'int', nullable: false })
   userId: number
 
-  @ManyToOne(() => Customer, (customer) => customer.bills, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Customer, (customer) => customer.saleBills, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer
 
-  @ManyToOne(() => User, (user) => user.bills, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.saleBills, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User
 
-  @OneToMany(() => SoldItem, (soldItem) => soldItem.bill, { cascade: true })
+  @OneToMany(() => SoldItem, (soldItem) => soldItem.saleBill, { cascade: true })
   soldItems: SoldItem[]
 
   @Column({

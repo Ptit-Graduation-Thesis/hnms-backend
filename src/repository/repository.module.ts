@@ -9,8 +9,9 @@ import { MessageRepository } from './message.repository'
 import { CustomerRepository } from './customer.reporitory'
 import { ItemRepository } from './item.repository'
 import { BranchItemRepository } from './branch-item.repository'
-import { BillRepository } from './bill.repository'
+import { SaleBillRepository } from './sale-bill.repository'
 import { SoldItemRepository } from './sold-item.repository'
+import { ImportBillRepository } from './import-bill.repository'
 
 @Module({
   imports: [
@@ -23,8 +24,9 @@ import { SoldItemRepository } from './sold-item.repository'
       CustomerRepository,
       ItemRepository,
       BranchItemRepository,
-      BillRepository,
+      SaleBillRepository,
       SoldItemRepository,
+      ImportBillRepository,
     ]),
   ],
   exports: [TypeOrmModule],

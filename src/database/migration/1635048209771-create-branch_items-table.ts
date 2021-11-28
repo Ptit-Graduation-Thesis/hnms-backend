@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm'
+import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm'
 
 export class createBranchItemsTable1635048209771 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -17,12 +17,6 @@ export class createBranchItemsTable1635048209771 implements MigrationInterface {
           {
             name: 'amount',
             type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
-          {
-            name: 'import_price',
-            type: 'float',
             unsigned: true,
             isNullable: false,
           },
@@ -68,6 +62,15 @@ export class createBranchItemsTable1635048209771 implements MigrationInterface {
         referencedColumnNames: ['id'],
         referencedTableName: 'items',
         onDelete: 'CASCADE',
+      }),
+    )
+
+    await queryRunner.createIndex(
+      'branch_items',
+      new TableIndex({
+        name: 'UNEQUE_BRANCH_ITEMS_BRANCH_ID_ITEM_ID',
+        columnNames: ['branch_id', 'item_id'],
+        isUnique: true,
       }),
     )
   }

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm'
 
-export class createSoldItemsTable1635048503293 implements MigrationInterface {
+export class createSaleBillsTable1635048412288 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'sold_items',
+        name: 'sale_bills',
         columns: [
           {
             name: 'id',
@@ -15,18 +15,12 @@ export class createSoldItemsTable1635048503293 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'amount',
-            type: 'int',
-            unsigned: true,
-            isNullable: false,
-          },
-          {
-            name: 'item_id',
+            name: 'customer_id',
             type: 'int',
             isNullable: false,
           },
           {
-            name: 'sale_bill_id',
+            name: 'user_id',
             type: 'int',
             isNullable: false,
           },
@@ -46,27 +40,27 @@ export class createSoldItemsTable1635048503293 implements MigrationInterface {
     )
 
     await queryRunner.createForeignKey(
-      'sold_items',
+      'sale_bills',
       new TableForeignKey({
-        columnNames: ['item_id'],
+        columnNames: ['customer_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'items',
+        referencedTableName: 'customers',
         onDelete: 'CASCADE',
       }),
     )
 
     await queryRunner.createForeignKey(
-      'sold_items',
+      'sale_bills',
       new TableForeignKey({
-        columnNames: ['sale_bill_id'],
+        columnNames: ['user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'sale_bills',
+        referencedTableName: 'users',
         onDelete: 'CASCADE',
       }),
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('sold_items')
+    await queryRunner.dropTable('sale_bills')
   }
 }

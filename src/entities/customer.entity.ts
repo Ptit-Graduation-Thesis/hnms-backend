@@ -1,5 +1,6 @@
 import { BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { Bill } from './bill.entity'
+
+import { SaleBill } from './sale-bill.entity'
 
 @Entity('customers')
 export class Customer {
@@ -40,8 +41,8 @@ export class Customer {
   })
   address: string
 
-  @OneToMany(() => Bill, (bill) => bill.customer, { cascade: true })
-  bills: Bill[]
+  @OneToMany(() => SaleBill, (saleBill) => saleBill.customer, { cascade: true })
+  saleBills: SaleBill[]
 
   @Column({
     name: 'created_at',

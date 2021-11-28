@@ -1,7 +1,7 @@
-import { User } from '@/decorator'
 import { Body, Controller, Get, HttpCode, Put } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
+import { User } from '@/decorator'
 import { ProfileService } from './profile.service'
 import { ProfileValidate } from './profile.validate'
 import { User as UserEntity } from '@/entities'

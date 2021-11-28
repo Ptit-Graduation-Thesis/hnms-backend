@@ -1,13 +1,13 @@
-import { Roles } from '@/decorator'
-import { RoleStatus } from '@/enums'
 import { Body, Controller, Get, HttpCode, Param, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { Express } from 'express'
 
+import { RoleStatus } from '@/enums'
+import { Roles, User } from '@/decorator'
 import { ItemService } from './item.service'
 import { ItemValidate } from './item.validate'
-import { ItemDto } from './dto'
+import { ImportItemDto, ItemDto } from './dto'
 
 @ApiTags('Item')
 @ApiBearerAuth()
@@ -38,6 +38,18 @@ export class ItemController {
     await this.itemValidate.createItem(itemDto)
 
     await this.itemService.createItem(itemDto)
+  }
+
+  @Post('/import')
+  @HttpCode(201)
+  @Roles(RoleStatus.ADMIN, RoleStatus.ACCOUNTANT)
+  async importItem(
+    @Body() importItemDto: ImportItemDto,
+    @User('id') userId: number,
+    @User('branchId') branchId: number,
+  ) {
+    await this.itemValidate.importItem(importItemDto)
+    await this.itemService.importItem(userId, branchId, importItemDto)
   }
 
   @Put('/:itemId')
