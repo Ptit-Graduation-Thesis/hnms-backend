@@ -7,7 +7,7 @@ import { RoleStatus } from '@/enums'
 import { Roles, User } from '@/decorator'
 import { ItemService } from './item.service'
 import { ItemValidate } from './item.validate'
-import { ImportItemDto, ItemDto } from './dto'
+import { ImportItemDto, ItemDto, SellItemDto } from './dto'
 
 @ApiTags('Item')
 @ApiBearerAuth()
@@ -50,6 +50,15 @@ export class ItemController {
   ) {
     await this.itemValidate.importItem(importItemDto)
     await this.itemService.importItem(userId, branchId, importItemDto)
+  }
+
+  @Post('/sell')
+  @HttpCode(201)
+  @Roles(RoleStatus.ADMIN, RoleStatus.SALE_EMPLOYEE)
+  async sellItem(@Body() sellItemDto: SellItemDto, @User('id') userId: number, @User('branchId') branchId: number) {
+    await this.itemValidate.sellItem(sellItemDto)
+
+    await this.itemService.sellItem(userId, branchId, sellItemDto)
   }
 
   @Put('/:itemId')

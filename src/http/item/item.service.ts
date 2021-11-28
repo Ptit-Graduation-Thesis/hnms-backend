@@ -3,9 +3,9 @@ import { getConnection } from 'typeorm'
 
 import { ItemRepository } from '@/repository'
 import { S3Service } from '@/s3'
-import { ImportItemDto, ItemDto } from './dto'
+import { ImportItemDto, ItemDto, SellItemDto } from './dto'
 import { generateQrCode } from '@/utils/qr-code'
-import { BranchItem, ImportBill, Item } from '@/entities'
+import { BranchItem, ImportBill, Item, SaleBill, SoldItem } from '@/entities'
 import { ImportedItem } from '@/entities/imported-item.entity'
 
 @Injectable()
@@ -92,8 +92,7 @@ export class ItemService {
       await Promise.all(
         importItemDto.items.map(async (item) => {
           const existItem = await queryRunner.manager.findOne(Item, item.itemId)
-
-          if (!existItem) throw new HttpException('Item does not exist', HttpStatus.NOT_FOUND)
+          if (!existItem) throw new HttpException('Item does not exist', HttpStatus.BAD_REQUEST)
 
           const existBranchItem = await queryRunner.manager.findOne(BranchItem, { itemId: item.itemId, branchId })
 
@@ -127,6 +126,41 @@ export class ItemService {
       await queryRunner.rollbackTransaction()
 
       throw new InternalServerErrorException()
+    } finally {
+      await queryRunner.release()
+    }
+  }
+
+  async sellItem(userId: number, branchId: number, sellItemDto: SellItemDto) {
+    const connection = getConnection()
+    const queryRunner = connection.createQueryRunner()
+
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
+
+    try {
+      const saleBill = await queryRunner.manager.save(SaleBill, { userId, customerId: sellItemDto.customerId })
+
+      await Promise.all(
+        sellItemDto.items.map(async (item) => {
+          const existItem = await queryRunner.manager.findOne(Item, item.itemId)
+          if (!existItem) throw new HttpException('Item does not exist', HttpStatus.BAD_REQUEST)
+
+          const existBranchItem = await queryRunner.manager.findOne(BranchItem, { itemId: item.itemId, branchId })
+          if (!existBranchItem) throw new HttpException('Item does not exist at the branch', HttpStatus.BAD_REQUEST)
+
+          if (item.amount > existBranchItem.amount) throw new HttpException('Out of stock', HttpStatus.BAD_REQUEST)
+
+          await queryRunner.manager.insert(SoldItem, { ...item, saleBillId: saleBill.id })
+          await queryRunner.manager.decrement(BranchItem, { itemId: item.itemId, branchId }, 'amount', item.amount)
+        }),
+      )
+
+      await queryRunner.commitTransaction()
+    } catch (error) {
+      await queryRunner.rollbackTransaction()
+
+      throw error
     } finally {
       await queryRunner.release()
     }
