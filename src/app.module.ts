@@ -15,6 +15,7 @@ import { UserModule } from '@/http/user'
 import { RoomModule } from '@/http/room'
 import { BranchModule } from '@/http/barnch'
 import { ItemModule } from '@/http/item'
+import { CustomerModule } from '@/http/customer'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ItemModule } from '@/http/item'
     RoomModule,
     BranchModule,
     ItemModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
