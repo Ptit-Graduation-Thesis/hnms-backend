@@ -3,11 +3,20 @@ name: CI
 on: [push]
 
 jobs:
-  lint:
+  deploy:
     runs-on: ubuntu-18.04
+    if: ${{ github.ref == 'refs/heads/master' }}
     steps:
       - uses: actions/checkout@v2
-      - name: Check lint
+      - name: Deploy
         run: |
-          npm install
-          npm run lint
+          yarn
+          yarn lint
+          mkdir -p ~/.ssh
+          ssh-keyscan -H '34.124.205.242'  >> ~/.ssh/known_hosts
+          echo "${{secrets.PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.ENV}}" > .env
+          yarn build
+          rsync --progress -avzh --exclude='.git' -e "ssh -i ~/.ssh/id_rsa " --rsync-path="sudo rsync" . ubuntu@34.124.205.242:/var/www/hnms-backend
+          ssh ubuntu@34.124.205.242 "pm2 restart hnms-backend"
