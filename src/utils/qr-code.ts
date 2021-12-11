@@ -5,13 +5,13 @@ import { ItemType } from '@/enums'
 export const generateQrCode = (type: ItemType) => {
   switch (type) {
     case ItemType.PHONE:
-      return `HNMS/PHONE/${uuid()}`
+      return `HNMS-PHONE-${uuid()}`
 
     case ItemType.TABLET:
-      return `HNMS/TABLET/${uuid()}`
+      return `HNMS-TABLET-${uuid()}`
 
     case ItemType.LAPTOP:
-      return `HNMS/LAPTOP/${uuid()}`
+      return `HNMS-LAPTOP-${uuid()}`
 
     default:
       return ''

@@ -16,4 +16,13 @@ export class ItemRepository extends Repository<Item> {
       order: { id: 'DESC' },
     })
   }
+
+  getItemByQrCode(qrCode: string) {
+    return this.findOne(
+      { qrCode },
+      {
+        relations: ['branchItems', 'branchItems.branch'],
+      },
+    )
+  }
 }

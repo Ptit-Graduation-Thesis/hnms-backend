@@ -20,6 +20,10 @@ export class ItemService {
     return { data, total, limit, page }
   }
 
+  async getItemByQrCode(qrCode: string) {
+    return this.itemRepo.getItemByQrCode(qrCode)
+  }
+
   async createItem(itemDto: ItemDto) {
     let storedPictureKey = ''
 

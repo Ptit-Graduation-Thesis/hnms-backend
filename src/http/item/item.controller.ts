@@ -28,6 +28,14 @@ export class ItemController {
     return this.itemService.getItems(keyword, type, limit, page)
   }
 
+  @Get('/:qrCode')
+  @HttpCode(200)
+  async getItemByQrCode(@Param('qrCode') qrCode: string) {
+    await this.itemValidate.getItemByQrCode({ qrCode })
+
+    return this.itemService.getItemByQrCode(qrCode)
+  }
+
   @Post()
   @HttpCode(201)
   @ApiConsumes('multipart/form-data')
