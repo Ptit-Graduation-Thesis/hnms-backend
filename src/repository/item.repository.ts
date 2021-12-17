@@ -17,12 +17,10 @@ export class ItemRepository extends Repository<Item> {
     })
   }
 
-  getItemByQrCode(qrCode: string) {
-    return this.findOne(
-      { qrCode },
-      {
-        relations: ['branchItems', 'branchItems.branch'],
-      },
-    )
+  getItemByQrCodeOrId(qrCodeOrId: string) {
+    return this.findOne({
+      where: [{ id: qrCodeOrId }, { qrCode: qrCodeOrId }],
+      relations: ['branchItems', 'branchItems.branch'],
+    })
   }
 }

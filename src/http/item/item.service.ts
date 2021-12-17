@@ -20,8 +20,12 @@ export class ItemService {
     return { data, total, limit, page }
   }
 
-  async getItemByQrCode(qrCode: string) {
-    return this.itemRepo.getItemByQrCode(qrCode)
+  async getItemByQrCodeOrId(qrCodeOrId: string) {
+    const item = await this.itemRepo.getItemByQrCodeOrId(qrCodeOrId)
+
+    if (!item) throw new HttpException('Item does not exist', HttpStatus.NOT_FOUND)
+
+    return item
   }
 
   async createItem(itemDto: ItemDto) {

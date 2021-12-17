@@ -28,12 +28,12 @@ export class ItemController {
     return this.itemService.getItems(keyword, type, limit, page)
   }
 
-  @Get('/:qrCode')
+  @Get('/:qrCodeOrId')
   @HttpCode(200)
-  async getItemByQrCode(@Param('qrCode') qrCode: string) {
-    await this.itemValidate.getItemByQrCode({ qrCode })
+  async getItemByQrCodeOrId(@Param('qrCodeOrId') qrCodeOrId: string) {
+    await this.itemValidate.getItemByQrCodeOrId({ qrCodeOrId })
 
-    return this.itemService.getItemByQrCode(qrCode)
+    return this.itemService.getItemByQrCodeOrId(qrCodeOrId)
   }
 
   @Post()

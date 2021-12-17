@@ -19,10 +19,10 @@ export class ItemValidate {
     }
   }
 
-  async getItemByQrCode(params: { qrCode: string }) {
+  async getItemByQrCodeOrId(params: { qrCodeOrId: string }) {
     try {
       const schema = Joi.object({
-        qrCode: Joi.string().required(),
+        qrCodeOrId: Joi.string().required(),
       })
       await schema.validateAsync(params)
     } catch {

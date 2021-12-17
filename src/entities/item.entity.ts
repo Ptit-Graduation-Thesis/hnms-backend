@@ -20,7 +20,7 @@ export class Item {
   @Column({
     name: 'des',
     type: 'varchar',
-    length: 255,
+    length: 1000,
     collation: 'utf8_general_ci',
     nullable: true,
   })
