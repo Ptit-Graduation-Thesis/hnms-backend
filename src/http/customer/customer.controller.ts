@@ -24,7 +24,7 @@ export class CustomerController {
   async createCustomer(@Body() customerDto: CustomerDto) {
     await this.customerValidate.createCustomer(customerDto)
 
-    await this.customerService.createCustomer(customerDto)
+    return await this.customerService.createCustomer(customerDto)
   }
 
   @Put('/:customerId')

@@ -19,7 +19,8 @@ export class CustomerService {
     if (hasPhoneNumber) throw new HttpException('Phone number already exist', HttpStatus.BAD_REQUEST)
 
     try {
-      await this.customerRepo.insert(customerDto)
+      const customer = await this.customerRepo.save(customerDto)
+      return customer
     } catch {
       throw new InternalServerErrorException()
     }
