@@ -84,6 +84,7 @@ export class ItemValidate {
     try {
       const schema = Joi.object({
         customerId: Joi.number().integer().min(0).required(),
+        totalPrice: Joi.number().min(0).required(),
         items: Joi.array()
           .items(
             Joi.object({

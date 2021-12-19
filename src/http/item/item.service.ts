@@ -147,7 +147,11 @@ export class ItemService {
     await queryRunner.startTransaction()
 
     try {
-      const saleBill = await queryRunner.manager.save(SaleBill, { userId, customerId: sellItemDto.customerId })
+      const saleBill = await queryRunner.manager.save(SaleBill, {
+        userId,
+        customerId: sellItemDto.customerId,
+        totalPrice: sellItemDto.totalPrice,
+      })
 
       await Promise.all(
         sellItemDto.items.map(async (item) => {

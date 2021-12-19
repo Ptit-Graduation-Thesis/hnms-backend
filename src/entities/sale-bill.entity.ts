@@ -18,6 +18,14 @@ export class SaleBill {
   @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
   id: number
 
+  @Column({
+    name: 'total_price',
+    type: 'float',
+    unsigned: true,
+    nullable: false,
+  })
+  totalPrice: number
+
   @Column({ name: 'customer_id', type: 'int', nullable: false })
   customerId: number
 

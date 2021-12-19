@@ -11,6 +11,7 @@ export class ItemRepository extends Repository<Item> {
 
     return this.findAndCount({
       where: conditions,
+      relations: ['branchItems', 'branchItems.branch'],
       take: limit,
       skip: offset,
       order: { id: 'DESC' },
